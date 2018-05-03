@@ -1,0 +1,52 @@
+The command of ARM as mogbus slave
+
+the device address is  0x03
+
+1¡¢DI  ---> read discrete input £¨only read£©
+
+   resqust:0x03 0x02 0x00 0x00 0x00 0x08 +  crc
+   respond:0x03 0x02 0x01 0x01 + crc
+
+2¡¢DO/DI  ---> wire output & wire input£¨R/W£©/* the start register is 100 */
+   
+   DO<ON> --> 
+   resqust: 0x03 0x05 0x00 0x64 0xFF 0x00 +  crc
+   respond: ........
+
+   DO<OFF> -->
+   resqust: 0x03 0x05 0x00 0x64 0x00 0x00 + crc
+   respond: .........
+
+   DI --> 
+   resqust:0x03 0x01 0x00 0x64 0x00 0x08 + crc
+   respond:0x03 0x01 0x01 0x01 +  crc
+
+
+3¡¢AO/AI  ---> read the holding register £¨R/W£©/* the start register is 300 */
+   
+   AO --> 
+   resqust: 0x03 0x06 0x01 0x2c     0x01        0xa0   + crc  /*control output the analog*/
+                                value-hight  value-low 
+   respond: .........
+
+   AI -->
+   resqust: 0x03 0x03 0x01 0x2c 0x00 0x08 + crc  /*read the output register of analog*/
+   respond: .........
+   
+   
+4¡¢AI  --->read input register£¨only read£©
+
+   AI -->
+   resqust: 0x03 0x04 0x00 0xc8 0x00 0x02  + crc    /*read the version of software*/
+   respond: .........
+
+   AI --> 
+   resqust:0x03 0x04 0x00 0xca 0x00 0x02  + crc    /*read the version of hardware*/
+   respond: .........
+
+   AI -->
+   resqust: 0x03 0x04 0x00 0xf0 0x00  0x08  + crc     /*read the input register of analog*/
+   respond: .........
+
+
+ 
